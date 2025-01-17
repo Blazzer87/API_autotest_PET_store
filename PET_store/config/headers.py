@@ -3,8 +3,5 @@
 
 class Headers:
 
-    accept_json = {"Accept":"application/json"},
-    content_type_json = {"Content-Type":"application/json"},
-
-    accept_xml = {"Accept":"application/xml"},
-    content_type_xml = {"Content-Type": "application/xml"},
+    headers_json = {"Accept": "application/json", "Content-Type": "application/json"}
+    headers_xml = {"Accept": "application/xml", "Content-Type": "application/xml"}

@@ -13,9 +13,10 @@ class PetAPI:
         self.headers = Headers()
 
     def add_pet (self):
+
         response = requests.post(
             url = self.endpoints.add_pet,
-            headers = self.headers.accept_json,
+            headers = self.headers.headers_json,
             json = self.payloads.add_pet
         )
         print(response.json())
