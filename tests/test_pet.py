@@ -1,6 +1,4 @@
-import allure
-import pytest
-from PET_store.config.base_test import BaseTest
+from config.base_test import BaseTest
 
 
 

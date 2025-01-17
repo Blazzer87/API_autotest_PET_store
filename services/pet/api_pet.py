@@ -1,8 +1,8 @@
 import requests
 
-from PET_store.config.headers import Headers
-from PET_store.services.pet.endpoints import Endpoints
-from PET_store.services.pet.payloads import Payloads
+from config.headers import Headers
+from services.pet.endpoints import Endpoints
+from services.pet.payloads import Payloads
 
 
 class PetAPI:

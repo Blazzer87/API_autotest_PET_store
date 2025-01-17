@@ -1,6 +1,6 @@
 import pytest
 
-from PET_store.services.pet.api_pet import PetAPI
+from services.pet.api_pet import PetAPI
 
 
 class BaseTest:
