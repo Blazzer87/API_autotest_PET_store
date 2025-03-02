@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class PetJSON (BaseModel):
+class ValidatePetJson (BaseModel):
     id: int
     category: dict
     name: str

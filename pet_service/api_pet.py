@@ -3,12 +3,12 @@ import requests
 from pet_service.headers import Headers
 from pet_service.endpoints import Endpoints
 from pet_service.payloads import *
-from json_example.pet_json import PetJSON
-
+from json_example.pet_json import ValidatePetJson
 
 
 class PetAPI:
 
+    response = None
 
     def __init__(self):
         self.payloads = Payloads()
@@ -16,20 +16,17 @@ class PetAPI:
         self.headers = Headers()
 
 
-    def add_pet (self):
+    def add_pet (self, pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status):
 
-        response = requests.post(
+        self.response = requests.post(
             url = self.endpoints.EP_add_pet,
             headers = self.headers.headers_acceptjson_contentjson,
-            json = self.payloads.PL_add_pet
+            json = self.payloads.payload_add_pet(pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status)
         )
-        print(response.json())
-        assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
-        model = PetJSON(**response.json())
-        return model
+        return self.response
 
 
-    def find_pet_by_ID (self):
+    def find_pet_by_id (self):
 
         response = requests.get(
             url = self.endpoints.EP_find_by_ID_pet(EP_pet_id=PL_pet_id),
@@ -37,7 +34,7 @@ class PetAPI:
         )
         print(response.json())
         assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
-        model = PetJSON(**response.json())
+        model = ValidatePetJson(**response.json())
         return model
 
 
@@ -50,7 +47,7 @@ class PetAPI:
         )
         print(response.json())
         assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
-        model = PetJSON(**response.json())
+        model = ValidatePetJson(**response.json())
         return model
 
 
