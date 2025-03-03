@@ -3,6 +3,7 @@
 
 class Headers:
 
-    headers_acceptjson_contentjson = {"Accept": "application/json", "Content-Type": "application/json"}
-    headers_acceptxml_contentxml = {"Accept": "application/xml", "Content-Type": "application/xml"}
-    headers_acceptjson_contentxwwwformurlencoded = {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
+    headers_accept_json_contentjson = {"Accept": "application/json"}
+    headers_content_json = {"Content-Type": "application/json"}
+    headers_content_x_www_form_urlencoded = {"Content-Type": "application/x-www-form-urlencoded"}
+

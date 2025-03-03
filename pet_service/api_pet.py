@@ -2,8 +2,8 @@ import requests
 
 from pet_service.headers import Headers
 from pet_service.endpoints import Endpoints
-from pet_service.payloads import *
-from json_example.pet_json import ValidatePetJson
+from pet_service.payloads import Payloads
+from json_example.pet_json import PetJsonModel
 
 
 class PetAPI:
@@ -19,36 +19,30 @@ class PetAPI:
     def add_pet (self, pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status):
 
         self.response = requests.post(
-            url = self.endpoints.EP_add_pet,
-            headers = self.headers.headers_acceptjson_contentjson,
+            url = self.endpoints.endpoint_add_pet(),
+            headers = self.headers.headers_content_json | self.headers.headers_accept_json_contentjson,
             json = self.payloads.payload_add_pet(pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status)
         )
         return self.response
 
 
-    def find_pet_by_id (self):
+    def find_pet_by_id (self, pet_id):
 
-        response = requests.get(
-            url = self.endpoints.EP_find_by_ID_pet(EP_pet_id=PL_pet_id),
-            headers = self.headers.headers_acceptjson_contentjson
+        self.response = requests.get(
+            url = self.endpoints.endpoint_find_by_pet_id(pet_id),
+            headers = self.headers.headers_content_json | self.headers.headers_accept_json_contentjson
         )
-        print(response.json())
-        assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
-        model = ValidatePetJson(**response.json())
-        return model
+        return self.response
 
 
-    def update_pet_fully (self):
+    def update_pet_fully (self, pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status):
 
-        response = requests.put(
-            url=self.endpoints.EP_update_pet_fully,
-            headers=self.headers.headers_acceptjson_contentjson,
-            json=self.payloads.PL_update_pet_fully
+        self.response = requests.put(
+            url=self.endpoints.endpoint_update_pet_fully(),
+            headers=self.headers.headers_content_json | self.headers.headers_accept_json_contentjson,
+            json=self.payloads.payload_add_pet(pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status)
         )
-        print(response.json())
-        assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
-        model = ValidatePetJson(**response.json())
-        return model
+        return self.response
 
 
     def update_pet_by_id (self):

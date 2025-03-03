@@ -1,10 +1,22 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
-class ValidatePetJson (BaseModel):
+
+class Category(BaseModel):
     id: int
-    category: dict
     name: str
-    photoUrls: list
-    tags: list
+
+class Tag(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+class PetJsonModel (BaseModel):
+    id: int
+    category: Category
+    name: str
+    photoUrls: Optional[list[str]] = None
+    tags: list[Tag]
     status: str
+
+
