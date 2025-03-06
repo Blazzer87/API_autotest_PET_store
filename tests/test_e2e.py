@@ -1,19 +1,17 @@
 import pytest
-from pytest_lazyfixture import lazy_fixture
-
 from config.base_test import BaseTest
-from json_example.pet_json import PetJsonModel
+from model.pet_json_model import PetJsonModel, StatusMessageModel
 
 
 class TestUserFlowCRUD (BaseTest):
 
     @pytest.fixture
     def create_pet_data(self):
-        return 28022025, 90909009, "categorname", "ЁЖИК", "http://nofoto.ru", 123456789, "thisisTagName", "available"
+        return 9223372036854742, 111111111, "categorЁЖИК", "ЁЖИК", "http://ЁЖИК.ru", 22222222, "thisisTagName", "available"
 
     @pytest.fixture
     def update_pet_data(self):
-        return 11111111, 922222222, "categorname2", "ЙОЖЕГ", "http://nofoto.ru", 987654321, "TagNamethisis", "sold"
+        return 9223372036854742, 9999999999, "ЙОЖЕГcategor", "ЙОЖЕГ", "http://nЙОЖЕГ.ru", 8888888888, "TagNamethisis", "pending"
 
 
     def test_add_pet(self, create_pet_data):
@@ -37,22 +35,23 @@ class TestUserFlowCRUD (BaseTest):
         PetJsonModel(**self.response.json())
 
 
-
-    # def test_update_pet_by_id (self):
-    #     self.api_pet.update_pet_by_id()
-    #
-    #
-    # def test_find_pet_retry (self):
-    #     var = self.api_pet.find_pet_by_ID()
-    #     print("Мы обновили имя на: ", var.name, '\n')
-    #
-    #
-    # def test_delete_pet (self):
-    #     self.api_pet.delete_pet()
-    #
-    #
-    # def test_check_delete_pet (self):
-    #     self.api_pet.check_del_pet_by_ID()
-    #
+    @pytest.mark.parametrize('name, status', [('`ЁЖ`', 'sold')])
+    def test_update_pet_by_id (self, update_pet_data, name, status):
+        self.response = self.api_pet.update_pet_by_id(pet_id=update_pet_data[0], name_data=name, status_data=status)
+        assert self.response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {self.response.status_code}"
+        print("\nПолученный ответ:\n", self.response.json())
+        StatusMessageModel(**self.response.json())
 
 
+    def test_find_pet_retry (self, create_pet_data):
+        self.response = self.api_pet.find_pet_by_id(pet_id=create_pet_data[0])
+        assert self.response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {self.response.status_code}"
+        print("\nПолученный ответ:\n", self.response.json())
+        PetJsonModel(**self.response.json())
+
+
+    def test_delete_pet (self, create_pet_data):
+        self.response = self.api_pet.delete_pet(pet_id=create_pet_data[0])
+        assert self.response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {self.response.status_code}"
+        print("\nПолученный ответ:\n", self.response.json())
+        StatusMessageModel(**self.response.json())
