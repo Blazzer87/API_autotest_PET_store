@@ -63,12 +63,11 @@ class PetAPI:
         return self.response
 
 
+    def add_pet_with_adaptive_payload (self, custom_payload):
 
-    def check_del_pet_by_ID (self):
-
-        response = requests.get(
-            url = self.endpoints.EP_find_by_ID_pet(EP_pet_id=PL_pet_id),
-            headers = self.headers.headers_acceptjson_contentjson
+        self.response = requests.post(
+            url = self.endpoints.endpoint_add_pet(),
+            headers = self.headers.accept_json | self.headers.content_json,
+            json = custom_payload
         )
-        print(response.json())
-        assert response.status_code == 404, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
+        return self.response

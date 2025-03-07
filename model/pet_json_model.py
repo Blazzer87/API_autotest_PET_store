@@ -12,11 +12,11 @@ class Tag(BaseModel):
 
 class PetJsonModel (BaseModel):
     id: int
-    category: Optional[Category]
+    category: Optional[Category] = None
     name: str
-    photoUrls: Optional[list[str]] = None
-    tags: list[Tag]
-    status: str
+    photoUrls: list[str]
+    tags: Optional[list[Tag]] = None
+    status: Optional[str] = None
 
 class StatusMessageModel(BaseModel):
     code: Literal[200]
