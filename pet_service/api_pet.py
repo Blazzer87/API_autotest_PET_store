@@ -1,9 +1,8 @@
 import requests
-
 from pet_service.headers import Headers
 from pet_service.endpoints import Endpoints
 from pet_service.payloads import Payloads
-from json_example.pet_json import PetJsonModel
+from model.pet_json_model import PetJsonModel
 
 
 class PetAPI:
@@ -20,7 +19,7 @@ class PetAPI:
 
         self.response = requests.post(
             url = self.endpoints.endpoint_add_pet(),
-            headers = self.headers.headers_content_json | self.headers.headers_accept_json_contentjson,
+            headers = self.headers.accept_json | self.headers.content_json,
             json = self.payloads.payload_add_pet(pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status)
         )
         return self.response
@@ -29,8 +28,8 @@ class PetAPI:
     def find_pet_by_id (self, pet_id):
 
         self.response = requests.get(
-            url = self.endpoints.endpoint_find_by_pet_id(pet_id),
-            headers = self.headers.headers_content_json | self.headers.headers_accept_json_contentjson
+            url = self.endpoints.endpoint_find_pet_by_id(pet_id),
+            headers = self.headers.accept_json | self.headers.content_json
         )
         return self.response
 
@@ -39,35 +38,30 @@ class PetAPI:
 
         self.response = requests.put(
             url=self.endpoints.endpoint_update_pet_fully(),
-            headers=self.headers.headers_content_json | self.headers.headers_accept_json_contentjson,
+            headers=self.headers.accept_json | self.headers.content_json,
             json=self.payloads.payload_add_pet(pet_id, category_id, category_name, pet_name, photo_url, tag_id, tag_name, status)
         )
         return self.response
 
 
-    def update_pet_by_id (self):
+    def update_pet_by_id (self, pet_id, name_data, status_data):
 
-        x_www_form_urlencoded = {
-            'name': pet_name + " UPDATE 2",
-            'status': 'sold'
-        }
-        response = requests.post(
-            url=self.endpoints.EP_update_name_and_status_pet(EP_pet_id=PL_pet_id),
-            headers=self.headers.headers_acceptjson_contentxwwwformurlencoded,
-            data= x_www_form_urlencoded
+        self.response = requests.post(
+            url=self.endpoints.endpoint_update_pet_by_id(pet_id),
+            headers=self.headers.accept_json | self.headers.content_x_www_form_urlencoded,
+            data={'name': name_data, 'status': status_data}
         )
-        print(response.json())
-        assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
+        return self.response
 
 
-    def delete_pet (self):
+    def delete_pet (self, pet_id):
 
-        response = requests.delete(
-            url=self.endpoints.EP_delete_pet(EP_pet_id=PL_pet_id),
-            headers=self.headers.headers_acceptjson_contentjson
+        self.response = requests.delete(
+            url=self.endpoints.endpoint_update_pet_by_id(pet_id),
+            headers=self.headers.accept_json | self.headers.content_json,
         )
-        print(response.json())
-        assert response.status_code == 200, f"Статус-код отличается от ожидаемого. Получен код {response.status_code}"
+        return self.response
+
 
 
     def check_del_pet_by_ID (self):
